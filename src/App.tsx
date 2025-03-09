@@ -41,10 +41,6 @@ const TvShowTracker = () => {
 
   const [shows, setShows] = useState<Show[]>(initialShows);
   const [filteredShows, setFilteredShows] = useState<Show[]>(initialShows);
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [sortOption, setSortOption] = useState<string>('title');
-  const [filterOption, setFilterOption] = useState<string>('all');
-  const [showFilterMenu, setShowFilterMenu] = useState<boolean>(false);
 
   const handleRatingChange = (id: number, newRating: number) => {
     const updatedShows = shows.map(show => 
@@ -54,35 +50,8 @@ const TvShowTracker = () => {
   };
 
   useEffect(() => {
-    let result = [...shows];
-    if (searchTerm) {
-      result = result.filter(show => 
-        show.title.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-    if (filterOption !== 'all') {
-      if (filterOption === 'rated') {
-        result = result.filter(show => show.rating > 0);
-      } else if (filterOption === 'unrated') {
-        result = result.filter(show => show.rating === 0);
-      }
-    }
-    result.sort((a, b) => {
-      if (sortOption === 'title') {
-        return a.title.localeCompare(b.title);
-      } else if (sortOption === 'rating-high') {
-        return b.rating - a.rating;
-      } else if (sortOption === 'rating-low') {
-        return a.rating - b.rating;
-      } else if (sortOption === 'year-new') {
-        return b.year - a.year;
-      } else if (sortOption === 'year-old') {
-        return a.year - b.year;
-      }
-      return 0;
-    });
-    setFilteredShows(result);
-  }, [shows, searchTerm, sortOption, filterOption]);
+    setFilteredShows(shows);
+  }, [shows]);
 
   const StarRating = ({ rating, onRatingChange }: { rating: number; onRatingChange: (newRating: number) => void }) => {
     const renderStar = (position: number) => {
